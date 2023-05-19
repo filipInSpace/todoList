@@ -1,4 +1,5 @@
 
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -42,17 +43,20 @@ const TodoItemDetails: React.FC = () => {
   }
 
   return (
-    <div>
-  <div>
-    <h4 >Title: </h4>
-    <h1 >{todoItem.title}</h1>
-    <h4 >Free Text: </h4>
-    <p >{todoItem.free_text}</p>
-    <h4 >Deadline: </h4>
-    <p >{todoItem.date}</p>
-    <h4 >Deadline Time: </h4>
-    <p >{todoItem.time}</p>
-    <h4 >Status: </h4>
+    <div className="flex items-center justify-center h-screen">
+  <div className="bg-white rounded-lg shadow-md p-6 mb-6 mr-6">
+    <h4 className="font-bold">Title: </h4>
+    <h1 className="text-lg text-gray-800 mb-4">{todoItem.title}</h1>
+    <h4 className="font-bold">Free Text: </h4>
+    <p className="text-gray-500 mb-2">{todoItem.free_text}</p>
+    <h4 className="font-bold">Deadline: </h4>
+    <p className="text-gray-500 mb-2">{todoItem.date}</p>
+    <h4 className="font-bold">Deadline Time: </h4>
+    <p className="text-gray-500 mb-2">{todoItem.time}</p>
+    <h4 className="font-bold">Status: </h4>
+    <p className={`text-lg font-bold ${todoItem.completed ? "text-green-500" : "text-red-500"}`}>
+      {todoItem.completed ? "Completed" : "Not completed"}
+    </p>
   </div>
 </div>
   );
