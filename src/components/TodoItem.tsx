@@ -81,6 +81,13 @@ const TodoItem: React.FC<Props> = ({ todoListId }) => {
       setTodoItems(updatedItems);
     }
   };
+  
+  const handleDeleteTodoItem = async (id: number) => {
+    await axios.delete(`https://6425ff1f556bad2a5b47e151.mockapi.io/todo-lists/${todoListId}/items/${id}`);
+    setTodoItems((prevTodoItems) =>
+      prevTodoItems.filter((item) => item.id !== id)
+    );
+  };
 
   return (
     <>
@@ -92,6 +99,7 @@ const TodoItem: React.FC<Props> = ({ todoListId }) => {
             <span>{item.free_text}</span>
             <span>{item.date}</span>
             <span>{item.time}</span>
+              <button onClick={() => handleDeleteTodoItem(item.id)}>Delete</button>
           </li>
         ))}
       </ul>
