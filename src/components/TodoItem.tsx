@@ -70,14 +70,24 @@ const TodoItem: React.FC<Props> = ({ todoListId }) => {
         console.log(error);
       }
     }
-  }; 
+  };
+  
+  const handleComplete = async (id: number) => {
+    const updatedItems = [...todoItems];
+    const index = updatedItems.findIndex((item) => item.id === id);
+    if (index > -1) {
+      updatedItems[index].completed = !updatedItems[index].completed;
+      await axios.put(`https://6425ff1f556bad2a5b47e151.mockapi.io/todo-lists/${todoListId}/items/${id}`, updatedItems[index]);
+      setTodoItems(updatedItems);
+    }
+  };
 
   return (
     <>
       <ul>
         {filteredTodoItems.map((item) => (
           <li key={item.id} >
-            <input type="checkbox" />
+            <input type="checkbox" checked={item.completed} onClick={() => handleComplete(item.id)}/>
             <span><Link to={`/todo-lists/${todoListId}/items/${item.id}`}>{item.title}</Link></span>
             <span>{item.free_text}</span>
             <span>{item.date}</span>
