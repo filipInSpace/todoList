@@ -64,6 +64,24 @@ const TodoLists: React.FC = () => {
       });
     reset();
   });
+    
+   const handleDeleteTodoList = (todoListId: number) => {
+    axios
+      .get<ITodoItem[]>(`https://6425ff1f556bad2a5b47e151.mockapi.io/todo-lists/${todoListId}/items`)
+      .then((response) => {
+        const itemIds = response.data.map((item) => item.id);
+        itemIds.forEach((id) => {
+          axios.delete(`https://6425ff1f556bad2a5b47e151.mockapi.io/todo-lists/${todoListId}/items/${id}`);
+        });
+        axios
+          .delete(`https://6425ff1f556bad2a5b47e151.mockapi.io/todo-lists/${todoListId}`)
+          .then(() => {
+            setTodoLists((prevTodoLists) =>
+              prevTodoLists.filter((todoList) => todoList.id !== todoListId)
+            );
+          });
+      });
+  };
 
 
   return (
@@ -74,6 +92,7 @@ const TodoLists: React.FC = () => {
           <div key={todoList.id}>
             <div>
               <h2>{todoList.name}</h2>
+              <button onClick={() => handleDeleteTodoList(todoList.id)}>Delete</button>
             </div>
             <ul>
               {todoList.items.map((item) => (
