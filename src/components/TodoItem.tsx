@@ -88,10 +88,28 @@ const TodoItem: React.FC<Props> = ({ todoListId }) => {
       prevTodoItems.filter((item) => item.id !== id)
     );
   };
+  
+  const filteredTodoItems = todoItems.filter((item) => {
+    if (filter === "completed") {
+      return item.completed;
+    } else if (filter === "active") {
+      return !item.completed;
+    } else {
+      return true;
+    }
+  }).filter((item) => {
+    return item.title.toLowerCase().includes(search.toLowerCase());
+  });
 
   return (
     <>
       <ul>
+        <div className="flex items-center">
+          <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search Todos" />
+          <button onClick={() => setFilter("all")}>All</button>
+          <button onClick={() => setFilter("active")}>Active</button>
+          <button onClick={() => setFilter("completed")}>Completed</button>
+        </div>
         {filteredTodoItems.map((item) => (
           <li key={item.id} >
             <input type="checkbox" checked={item.completed} onClick={() => handleComplete(item.id)}/>
