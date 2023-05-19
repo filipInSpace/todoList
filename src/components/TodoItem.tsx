@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import { Link } from "react-router-dom";
 
 interface ITodoItem {
   id: number;
@@ -77,7 +78,7 @@ const TodoItem: React.FC<Props> = ({ todoListId }) => {
         {filteredTodoItems.map((item) => (
           <li key={item.id} >
             <input type="checkbox" />
-            <span>{item.title}</span>
+            <span><Link to={`/todo-lists/${todoListId}/items/${item.id}`}>{item.title}</Link></span>
             <span>{item.free_text}</span>
             <span>{item.date}</span>
             <span>{item.time}</span>
