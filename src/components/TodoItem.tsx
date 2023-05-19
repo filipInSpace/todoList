@@ -1,4 +1,5 @@
 
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -71,7 +72,7 @@ const TodoItem: React.FC<Props> = ({ todoListId }) => {
       }
     }
   };
-  
+
   const handleComplete = async (id: number) => {
     const updatedItems = [...todoItems];
     const index = updatedItems.findIndex((item) => item.id === id);
@@ -81,14 +82,14 @@ const TodoItem: React.FC<Props> = ({ todoListId }) => {
       setTodoItems(updatedItems);
     }
   };
-  
+
   const handleDeleteTodoItem = async (id: number) => {
     await axios.delete(`https://6425ff1f556bad2a5b47e151.mockapi.io/todo-lists/${todoListId}/items/${id}`);
     setTodoItems((prevTodoItems) =>
       prevTodoItems.filter((item) => item.id !== id)
     );
   };
-  
+
   const filteredTodoItems = todoItems.filter((item) => {
     if (filter === "completed") {
       return item.completed;
@@ -99,34 +100,34 @@ const TodoItem: React.FC<Props> = ({ todoListId }) => {
     }
   }).filter((item) => {
     return item.title.toLowerCase().includes(search.toLowerCase());
-  });
+  });  
 
   return (
     <>
-      <ul>
+      <ul className="border border-gray-300 p-4">
         <div className="flex items-center">
-          <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search Todos" />
-          <button onClick={() => setFilter("all")}>All</button>
-          <button onClick={() => setFilter("active")}>Active</button>
-          <button onClick={() => setFilter("completed")}>Completed</button>
+          <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} className="border border-gray-300 p-2 rounded-l-md flex-1" placeholder="Search Todos" />
+          <button onClick={() => setFilter("all")} className={`border border-gray-300 p-2 rounded-r-md ${filter === 'all' ? 'bg-blue-500 text-white' : ''}`}>All</button>
+          <button onClick={() => setFilter("active")} className={`border border-gray-300 p-2 ${filter === 'active' ? 'bg-blue-500 text-white' : ''}`}>Active</button>
+          <button onClick={() => setFilter("completed")} className={`border border-gray-300 p-2 rounded-r-md ${filter === 'completed' ? 'bg-blue-500 text-white' : ''}`}>Completed</button>
         </div>
         {filteredTodoItems.map((item) => (
-          <li key={item.id} >
-            <input type="checkbox" checked={item.completed} onClick={() => handleComplete(item.id)}/>
-            <span><Link to={`/todo-lists/${todoListId}/items/${item.id}`}>{item.title}</Link></span>
-            <span>{item.free_text}</span>
-            <span>{item.date}</span>
-            <span>{item.time}</span>
-              <button onClick={() => handleDeleteTodoItem(item.id)}>Delete</button>
+          <li key={item.id} className="border-t border-gray-300 py-2 flex items-center">
+            <input type="checkbox" checked={item.completed} onClick={() => handleComplete(item.id)} className="mr-2" />
+            <span><Link to={`/todo-lists/${todoListId}/items/${item.id}`} className="font-medium text-gray-800">{item.title}</Link></span>
+            <span className="text-gray-500 ml-2">{item.free_text}</span>
+            <span className="text-gray-500 ml-2">{item.date}</span>
+            <span className="text-gray-500 ml-2">{item.time}</span>
+            <button onClick={() => handleDeleteTodoItem(item.id)} className="ml-auto border border-red-500 p-2 rounded-md text-red-500 hover:bg-red-500 hover:text-white">Delete</button>
           </li>
         ))}
       </ul>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input type="text" {...register("title")}  placeholder="Enter Todo Title" />
-        <input type="text" {...register("free_text")}  placeholder="Enter Free Text" />
-        <input type="date" {...register("date")}  />
-        <input type="time" {...register("time")}  />
-        <button type="submit">Add Todo Item</button>
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-4">
+        <input type="text" {...register("title")} className="border border-gray-300 p-2 rounded-md mr-2" placeholder="Enter Todo Title" />
+        <input type="text" {...register("free_text")} className="border border-gray-300 p-2 rounded-md mr-2" placeholder="Enter Free Text" />
+        <input type="date" {...register("date")} className="border border-gray-300 p-2 rounded-md mr-2" />
+        <input type="time" {...register("time")} className="border border-gray-300 p-2 rounded-md mr-2" />
+        <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-400">Add Todo Item</button>
       </form>
     </>
 );
